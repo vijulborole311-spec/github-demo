@@ -2,3 +2,8 @@ jupyter
 numpy
 pandas
 scikit-learn
+streamlit
+jupyter
+numpy
+pandas
+scikit-learn

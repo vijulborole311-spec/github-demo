@@ -1,14 +1,21 @@
 # Cervical Cancer Risk Factor Analysis
 
-This project explores cervical cancer risk-factor data and includes a notebook
-for analysis and logistic-regression classification.
+This project explores cervical cancer risk-factor data and includes a Jupyter
+notebook and a Streamlit demonstration app using logistic regression.
 
-## Run locally
+## Run the Streamlit app
 
 1. Install dependencies with `pip install -r model/requirements.txt`.
-2. Place the dataset in this `model/` folder as `cervical-cancer_csv.csv`.
-3. Open `model/cervical-cancer.ipynb` in Jupyter and run its cells.
+2. Place the dataset at `model/data/cervical-cancer_csv (1).csv`.
+3. From the repository root, run `streamlit run model/app.py`.
 
-The dataset is not included in this public repository. The notebook expects the
-CSV filename above in its current working directory. Run Jupyter with `model/`
-as the working directory so the notebook can find the dataset.
+The dataset is not included in this public repository. The app expects the CSV
+at the path above. To run the analysis notebook, open
+`model/cervical-cancer.ipynb` in Jupyter with the dataset available locally.
+
+The app excludes prior diagnosis and screening-result fields from prediction
+inputs to reduce target leakage. Those fields remain visible in the dataset
+explorer when present.
+
+This is an educational project, not a medical device, screening tool, diagnosis,
+or clinical risk assessment.
