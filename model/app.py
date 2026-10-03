@@ -18,27 +18,36 @@ st.set_page_config(page_title="CerviCare | ML Demo", page_icon="🩺", layout="w
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+:root {--primary-color:#168178; --cc-ink:#173047; --cc-muted:#647887; --cc-line:#dce7e4; --cc-canvas:#f4f7f6;}
 html, body, [class*="css"] {font-family:'DM Sans',sans-serif;}
-.stApp {background:#f5f8fc; color:#182b45;}
-.block-container {padding-top:1.7rem; padding-bottom:2.5rem; max-width:1420px;}
-[data-testid="stSidebar"] {background:#102b4e;}
+.stApp {background:var(--cc-canvas); color:var(--cc-ink);}
+.block-container {padding-top:2.25rem; padding-bottom:2rem; max-width:1420px;}
+[data-testid="stSidebar"] {background:#153b40; min-width:250px;}
 [data-testid="stSidebar"] * {color:#eef5ff !important;}
-[data-testid="stSidebar"] [data-testid="stRadio"] label {padding:7px 10px; border-radius:9px;}
-.hero {background:linear-gradient(115deg,#12345b 0%,#176b78 100%); padding:27px 32px; border-radius:20px; color:white; margin-bottom:20px; box-shadow:0 10px 28px rgba(22,57,89,.12);}
-.hero h1 {font-family:'Manrope',sans-serif; font-size:31px; color:white; margin:0 0 5px 0; font-weight:800;}
+[data-testid="stSidebar"] [data-testid="stRadio"] label {padding:7px 10px; border-radius:8px;}
+[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"] {background:rgba(97,203,177,.14); border-radius:8px;}
+[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"] > div > div:first-child {border-color:#61cbb1 !important; background-color:#61cbb1 !important;}
+.hero {background:linear-gradient(112deg,#153d4a 0%,#14665f 100%); padding:20px 24px; border-radius:8px; color:white; margin-bottom:12px;}
+.hero h1 {font-family:'Manrope',sans-serif; font-size:29px; color:white; margin:0 0 4px 0; font-weight:800;}
 .hero p {color:#d8eaf4; margin:0; font-size:15px;}
-.eyebrow {font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#a8d8db; margin-bottom:8px;}
+.eyebrow {font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#a8d8db; margin-bottom:6px;}
 .section-title {font-family:'Manrope',sans-serif; font-size:20px; font-weight:800; color:#173657; margin:12px 0 4px 0;}
-.subtle {color:#64758b; font-size:13px;}
-.metric-card {background:white; border:1px solid #e7edf4; border-radius:15px; padding:16px 18px; box-shadow:0 4px 14px rgba(22,50,80,.035); min-height:108px;}
-.metric-label {color:#718198; font-size:12px; font-weight:600; margin-bottom:9px;}
-.metric-value {font-family:'Manrope',sans-serif; color:#173657; font-size:27px; font-weight:800; line-height:1.1;}
-.metric-foot {font-size:11px; color:#8492a5; margin-top:7px;}
-.panel {background:white; border:1px solid #e7edf4; border-radius:17px; padding:20px 22px;}
-.warning {background:#fff8e8; border:1px solid #f4dfaa; border-left:4px solid #dba437; padding:13px 16px; border-radius:10px; color:#674d18; font-size:13px;}
-.stButton>button[kind="primary"] {background:#176b78; border:0; border-radius:10px; font-weight:700; padding:10px 18px;}
-.stButton>button[kind="primary"]:hover {background:#125762;}
-div[data-testid="stForm"] {background:white; border:1px solid #e7edf4; border-radius:16px; padding:18px;}
+.subtle {color:var(--cc-muted); font-size:13px;}
+.metric-card {background:white; border:1px solid var(--cc-line); border-radius:8px; padding:13px 16px; min-height:96px;}
+.metric-label {color:#617887; font-size:12px; font-weight:600; margin-bottom:7px;}
+.metric-value {font-family:'Manrope',sans-serif; color:#173f48; font-size:25px; font-weight:800; line-height:1.1;}
+.metric-foot {font-size:11px; color:#738792; margin-top:6px;}
+.warning {background:#fffaf0; border:1px solid #efe1c4; border-left:4px solid #bd7a1e; padding:9px 12px; border-radius:8px; color:#654c25; font-size:12px; margin-bottom:14px;}
+.stButton>button[kind="primary"] {background:#168178; border:0; border-radius:8px; font-weight:700; padding:10px 18px;}
+.stButton>button[kind="primary"]:hover {background:#11665f;}
+div[data-testid="stForm"] {background:white; border:1px solid var(--cc-line); border-radius:8px; padding:16px;}
+@media (max-width: 720px) {
+    .block-container {padding:0.75rem 0.8rem 1.5rem;}
+    .hero {padding:17px 16px;}
+    .hero h1 {font-size:25px;}
+    .metric-card {padding:12px; min-height:88px;}
+    .metric-value {font-size:22px;}
+}
 footer {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
@@ -106,8 +115,15 @@ with st.sidebar:
     st.caption("Academic machine-learning prototype")
     st.caption("Model: Logistic Regression")
 
-st.markdown("<div class='hero'><div class='eyebrow'>Machine learning project</div><h1>Cervical Health Analysis</h1><p>Explore the dataset, test the notebook-trained workflow, and review model performance.</p></div>", unsafe_allow_html=True)
-st.markdown("<div class='warning'><b>Educational use only.</b> This prototype is not a medical device, screening tool, diagnosis, or clinical risk assessment. Its outputs must not guide healthcare decisions. Speak with a qualified healthcare professional about screening or medical concerns.</div>", unsafe_allow_html=True)
+PAGE_COPY = {
+    "Overview": ("CerviCare overview", "Risk-factor data and model setup at a glance."),
+    "Prediction demo": ("Prediction demo", "Explore model outputs using the dataset's numeric encodings."),
+    "Model performance": ("Model performance", "Review held-out metrics beside a majority-class baseline."),
+    "Dataset explorer": ("Dataset explorer", "Inspect the source data and processed feature summary."),
+}
+hero_title, hero_description = PAGE_COPY[page]
+st.markdown(f"<div class='hero'><div class='eyebrow'>CerviCare · Machine learning project</div><h1>{hero_title}</h1><p>{hero_description}</p></div>", unsafe_allow_html=True)
+st.markdown("<div class='warning'><b>Educational use only.</b> Not a medical device or clinical risk assessment. Do not use these outputs for care decisions. Consult a qualified healthcare professional.</div>", unsafe_allow_html=True)
 
 if not DATA_PATH.exists():
     st.error(f"Dataset not found at: {DATA_PATH}\n\nKeep your existing folder structure and ensure the CSV is inside the data folder with the name `cervical-cancer_csv (1).csv`.")
@@ -124,11 +140,12 @@ if page == "Overview":
     st.markdown("<div class='section-title'>Project at a glance</div><div class='subtle'>A quick summary of the data and the model setup.</div>", unsafe_allow_html=True)
     total, feature_count = len(data), len(features)
     positive = int(data["Biopsy"].sum())
-    c1,c2,c3,c4 = st.columns(4)
-    with c1: metric("Dataset records", f"{total:,}", "Rows available after notebook preprocessing")
-    with c2: metric("Input features", str(feature_count), "Predictors used by the notebook")
-    with c3: metric("Target-positive rows", f"{positive:,}", "Biopsy target = 1 in this dataset")
-    with c4: metric("Test split", "20%", "Stratified split · random state 42")
+    records_col, features_col = st.columns(2)
+    with records_col: metric("Dataset records", f"{total:,}", "Rows available after notebook preprocessing")
+    with features_col: metric("Input features", str(feature_count), "Predictors used by the model")
+    positives_col, split_col = st.columns(2)
+    with positives_col: metric("Target-positive rows", f"{positive:,}", "Biopsy target = 1 in this dataset")
+    with split_col: metric("Test split", "20%", "Stratified split · random state 42")
     st.write("")
     left,right = st.columns([1.15, .85], gap="large")
     with left:
@@ -191,18 +208,19 @@ elif page == "Model performance":
     rec = recall_score(y_test,y_pred,zero_division=0)
     f1 = f1_score(y_test,y_pred,zero_division=0)
     baseline_acc = accuracy_score(y_test,y_baseline)
-    c1,c2,c3,c4,c5 = st.columns(5)
-    with c1: metric("Accuracy",f"{acc:.1%}","Overall correct classifications")
-    with c2: metric("Precision · class 1",f"{prec:.1%}","Positive predictions that were correct")
-    with c3: metric("Recall · class 1",f"{rec:.1%}","Actual class 1 cases detected")
-    with c4: metric("F1 · class 1",f"{f1:.1%}","Harmonic mean of precision and recall")
-    with c5: metric("Majority baseline",f"{baseline_acc:.1%}","Accuracy from always predicting the training majority class")
+    accuracy_col, precision_col, recall_col = st.columns(3)
+    with accuracy_col: metric("Accuracy",f"{acc:.1%}","Overall correct classifications")
+    with precision_col: metric("Precision · class 1",f"{prec:.1%}","Positive predictions that were correct")
+    with recall_col: metric("Recall · class 1",f"{rec:.1%}","Actual class 1 cases detected")
+    f1_col, baseline_col = st.columns(2)
+    with f1_col: metric("F1 · class 1",f"{f1:.1%}","Harmonic mean of precision and recall")
+    with baseline_col: metric("Majority baseline",f"{baseline_acc:.1%}","Accuracy from always predicting the training majority class")
     left,right = st.columns([.8,1.2], gap="large")
     with left:
         st.markdown("<div class='panel'>", unsafe_allow_html=True)
         st.subheader("Confusion matrix")
         cm = confusion_matrix(y_test,y_pred,labels=[0,1])
-        st.dataframe(pd.DataFrame(cm,index=["Actual 0","Actual 1"],columns=["Predicted 0","Predicted 1"]),use_container_width=True)
+        st.dataframe(pd.DataFrame(cm,index=["Actual 0","Actual 1"],columns=["Predicted 0","Predicted 1"]),width="stretch")
         st.caption("Counts for the held-out test split.")
         st.markdown("</div>", unsafe_allow_html=True)
     with right:
@@ -210,7 +228,7 @@ elif page == "Model performance":
         st.subheader("Classification report")
         report = classification_report(y_test,y_pred,output_dict=True,zero_division=0)
         rep = pd.DataFrame(report).T
-        st.dataframe(rep.round(3),use_container_width=True)
+        st.dataframe(rep.round(3),width="stretch")
         st.markdown("</div>", unsafe_allow_html=True)
     st.caption("Metrics are dataset-specific and do not establish clinical safety, validity, or real-world performance.")
 
@@ -220,13 +238,13 @@ elif page == "Dataset explorer":
     with c1:
         st.markdown("<div class='panel'>", unsafe_allow_html=True)
         st.subheader("Preview")
-        st.dataframe(data.head(12),use_container_width=True, height=360)
+        st.dataframe(data.head(12),width="stretch", height=360)
         st.markdown("</div>", unsafe_allow_html=True)
     with c2:
         st.markdown("<div class='panel'>", unsafe_allow_html=True)
         st.subheader("Feature summary")
         summary = data.describe().T[["mean","std","min","max"]].round(2)
-        st.dataframe(summary,use_container_width=True,height=360)
+        st.dataframe(summary,width="stretch",height=360)
         st.markdown("</div>", unsafe_allow_html=True)
     st.download_button("Download processed dataset", data.to_csv(index=False).encode("utf-8"), file_name="cervical_dataset_processed.csv", mime="text/csv")
 
